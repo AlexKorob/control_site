@@ -26,7 +26,7 @@ SECRET_KEY = 'u40pmlk(xzuq(abl1rm$8koa^g*s-$6x27oe9f5w5ip=@(!)$u'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+INTERNAL_IPS = ('127.0.0.1', )
 
 # Application definition
 
@@ -39,6 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'ads',
+
+    'rest_framework',
+    'rest_framework_swagger',
+    'rest_framework.authtoken',
+    'debug_toolbar',
+
 ]
 
 MIDDLEWARE = [
@@ -49,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+
 ]
 
 ROOT_URLCONF = 'place_for_ads.urls'
@@ -75,14 +83,21 @@ WSGI_APPLICATION = 'place_for_ads.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'place_for_ads',
+#         'USER': 'alex',
+#         'PASSWORD': '123',
+#         'HOST': 'localhost',
+#         'PORT': 5432
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'place_for_ads',
-        'USER': 'alex',
-        'PASSWORD': '123',
-        'HOST': 'localhost',
-        'PORT': 5432
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -124,3 +139,29 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'ads.User'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'NON_FIELD_ERRORS_KEY': 'error',
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    # ),
+    # 'DEFAULT_PAGINATION_CLASS'​: 'rest_framework.pagination.LimitOffsetPagination'​,
+    # 'PAGINATE_BY': 10,
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic'
+        }
+    },
+    'LOGIN_URL': 'rest_framework:login',
+    'LOGOUT_URL': 'rest_framework:logout',
+}

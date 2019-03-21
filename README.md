@@ -22,6 +22,12 @@
   logout
 ```
 
+#### Run tests:
+
+```bash
+  ./manage.py test
+```
+
 #### Start site:
 
 ```bash
