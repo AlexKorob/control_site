@@ -28,10 +28,23 @@ class UserCreateTestCase(TestCase):
         self.assertEqual(client.status_code, 400)
         parameters["email"] = ""
         self.assertEqual(client.status_code, 400)
-        parameters["password"]= "123"
+        parameters["password"]= "123sS123"
         parameters["email"] = "masha@gmail.com"
         self.assertEqual(client.status_code, 400)
 
 
 class UserAuthorizationTestCase(TestCase):
-    pass
+    fixtures = ["user.json"]
+
+    def test_user_authorization(self):
+        url = reverse('user_auth')
+        parameters = {'username': 'oleg', 'password': '123sS123'}
+        client = self.client.post(url, parameters)
+        self.assertEqual(client.status_code, 200)
+        self.assertTrue(client.data.startswith("Token "))
+
+    def test_user_authorization_fail(self):
+        url = reverse('user_auth')
+        parameters = {'username': 'oleg', 'password': '123'}
+        client = self.client.post(url, parameters)
+        self.assertEqual(client.status_code, 400)

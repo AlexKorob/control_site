@@ -1,0 +1,12 @@
+[
+{
+  "model": "ads.user",
+  "pk": 1,
+  "fields": {
+    "username": "oleg",
+    "password": "123sS123",
+    "phone": "+30774562664",
+    "email": "oleg@gmail.com"
+  }
+}
+]
