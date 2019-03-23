@@ -5,4 +5,5 @@ saved
 *.sqlite3
 celerybeat-schedule
 celerybeat-schedule.db
+media
 .env
