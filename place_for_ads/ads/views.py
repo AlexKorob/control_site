@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FileUploadParser, ParseError, FormParser
 from .permissions import IsCreatorOrReadOnly
+from .utils import FilterViewMixin
 
 
 class UserCreate(generics.CreateAPIView):
@@ -50,7 +51,7 @@ class UserAuthorization(APIView):
         return True
 
 
-class AdViewSet(viewsets.ModelViewSet):
+class AdViewSet(FilterViewMixin, viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsCreatorOrReadOnly)
@@ -72,7 +73,16 @@ class AdViewSet(viewsets.ModelViewSet):
         return Response(f"{instance.title} was deleted", status=200)
 
     def list(self, request, *args, **kwargs):
-        self.queryset = Ad.objects.filter(status=Ad.PUBLISHED)
+        category = request.GET.get("category", None)
+        price = request.GET.get("price", None)
+        price_of_to = request.GET.get("price_of_to", None)
+        if price or category:
+            self.queryset = self.own_filter(category=category, price=price,
+                                            price_of_to=price_of_to)
+            if self.queryset == 400:
+                return Response("Bad Request", status=400)
+        else:
+            self.queryset = Ad.objects.filter(status=Ad.PUBLISHED)
         return super().list(self, request, *args, **kwargs)
 
 

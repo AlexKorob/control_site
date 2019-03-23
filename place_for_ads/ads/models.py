@@ -37,10 +37,8 @@ class Ad(models.Model):
     updated_on = models.DateField(auto_now=True)
 
     def __str__(self):
-        return "Ad: {0}; creator: {1}; category {2}; price: {3};".format(self.title,
-                                                                         self.creator,
-                                                                         self.category,
-                                                                         self.price)
+        return "Ad: {0}; creator: {1}; category {2}; price: {3};".format(self.title, self.creator,
+                                                                         self.category, self.price)
 
 class Category(MPTTModel):
     class MPTTMeta:
