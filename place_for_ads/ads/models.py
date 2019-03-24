@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -33,6 +31,7 @@ class Ad(models.Model):
     description = models.TextField(max_length=5000)
     price = models.DecimalField(decimal_places=2, max_digits=15, default=0.0)
     contractual = models.BooleanField(default=False, blank=True)
+    task_id = models.CharField(max_length=36, null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
 
@@ -65,9 +64,3 @@ class Image(models.Model):
 
     def __str__(self):
         return "Image for {0}; creator: {1}".format(self.ad.title, self.ad.creator)
-
-
-@receiver(post_save, sender=User)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)

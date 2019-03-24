@@ -5,7 +5,8 @@ from . import views
 
 
 router = DefaultRouter()
-router.register(r'ads', views.AdViewSet)
+router.register(r'ads', views.AdViewSet, base_name="ads")
+router.register(r'users', views.UserViewSet)
 
 
 urlpatterns = [

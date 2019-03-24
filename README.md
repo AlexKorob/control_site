@@ -28,6 +28,12 @@
   ./manage.py test
 ```
 
+#### Start Celery:
+
+```bash
+  celery -A ads worker --hostname="worker" -l info
+```
+
 #### Start site:
 
 ```bash

@@ -1,14 +1,17 @@
 import os
+from datetime import timedelta
 from django.conf import settings
 from django.shortcuts import render, reverse
 from django.http import HttpResponseRedirect
 from rest_framework import generics, status, viewsets, permissions
 from .models import User, Ad, Category
 from rest_framework.authtoken.models import Token
-from .serializers import UserCreateSerializer, AdSerializer, CategorySerializer
+from .serializers import UserCreateSerializer, AdSerializer, CategorySerializer, UserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FileUploadParser, ParseError, FormParser
+from rest_framework.decorators import action
+from .tasks import hide_ad_after_30_days
 from .permissions import IsCreatorOrReadOnly
 from .utils import FilterViewMixin
 
@@ -29,7 +32,7 @@ class UserCreate(generics.CreateAPIView):
 class UserAuthorization(APIView):
     def post(self, request):
         if request.META.get("HTTP_AUTHORIZATION", None) or request.COOKIES.get("authorization", None):
-            return HttpResponseRedirect("https://google.com/") # NOT FORGOT CHANGE
+            return HttpResponseRedirect(reverse("ads-list"))
 
         validate = self.validate(request)
         if validate == True:
@@ -89,3 +92,18 @@ class AdViewSet(FilterViewMixin, viewsets.ModelViewSet):
 class Categories(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    # lookup_field would be used by the get_object, by default == id
+    lookup_field = "username"
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    @action(detail=True, methods=("get",))
+    def ad(self, request, *args, **kwargs):
+        # user_name = self.queryset.filter(username=)
+        user = self.get_object()
+        ad = Ad.objects.filter(creator=user)
+        serializer = AdSerializer(ad, many=True)
+        return Response(serializer.data)

@@ -8,6 +8,12 @@ from rest_framework_recursive.fields import RecursiveField
 from rest_framework.parsers import ParseError
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'is_active', 'is_staff')
+
+
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
