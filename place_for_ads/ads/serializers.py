@@ -81,3 +81,7 @@ class AdSerializer(AdSerializerMixin, serializers.ModelSerializer):
     def update(self, instance, data):
         data = self.mix(data, self.context, "update", instance)
         return super().update(instance, data)
+
+    def partial_update(self, instance, data):
+        data =  self.mix(data, self.context, "update", instance)
+        return super().update(instance, data)

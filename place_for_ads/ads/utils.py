@@ -21,6 +21,12 @@ class AdSerializerMixin(object):
         if images:
             self.images_validate(images)
 
+        if Image.objects.filter(ad=instance) and images:
+            all_images = list(Image.objects.filter(ad=instance))
+            all_images.extend(images)
+            if len(all_images) >= 8:
+                raise ValidationError("Ad must contain < 8 images")
+
         if action == "create":
             ad = Ad.objects.create(**data)
         else:

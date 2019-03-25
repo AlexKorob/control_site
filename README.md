@@ -7,6 +7,7 @@
   cd control_site
   python3 -m venv ./venv
   . venv/bin/activate
+  cd place_for_ads
   pip3 install -r requirements.txt
 ```
 
@@ -20,6 +21,11 @@
   GRANT ALL PRIVILEGES ON DATABASE place_for_ads TO alex;
   \q
   logout
+```
+
+#### Load fixtures
+```bash
+  ./manage.py loaddata ads.json
 ```
 
 #### Run tests:

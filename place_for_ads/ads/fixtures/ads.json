@@ -1,0 +1,208 @@
+[
+{
+    "model": "ads.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$120000$rijFDjAQ2SaO$4o7HAlsuOPEF6mCZRcsivyPkFMCxKwEYUFAsWVll93c=",
+        "last_login": "2019-03-22T16:01:39.055Z",
+        "is_superuser": true,
+        "username": "alex",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2019-03-22T16:01:03.300Z",
+        "phone": "+30669585734",
+        "email": "alex@gmail.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "ads.user",
+    "pk": 2,
+    "fields": {
+        "password": "1234567Dd",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "alexandr",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2019-03-23T19:42:59.118Z",
+        "phone": "+380225582310",
+        "email": "alexadssnrKK@gmail.comdds",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "ads.ad",
+    "pk": 15,
+    "fields": {
+        "status": 20,
+        "creator": 1,
+        "title": "\u041f\u0440\u043e\u0434\u0430\u043c \u0445\u043e\u043b\u043e\u0434\u0438\u043b\u044c\u043d\u0438\u043a \u0432 \u0432\u0435\u043b\u0438\u043a\u043e\u043b\u0435\u043f\u043d\u043e\u043c \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0438",
+        "category": 2,
+        "description": "Good !!!",
+        "price": "9900.00",
+        "contractual": true,
+        "task_id": "9086d805-2cbe-46fa-ac36-3e7727ba41f3",
+        "created_on": "2019-03-25T10:26:00.377Z",
+        "updated_on": "2019-03-25"
+    }
+},
+{
+    "model": "ads.ad",
+    "pk": 16,
+    "fields": {
+        "status": 20,
+        "creator": 1,
+        "title": "\u041f\u0440\u043e\u0434\u0430\u043c \u043b\u043e\u0434\u043a\u0443",
+        "category": 6,
+        "description": "\u041e\u0442\u043b\u0438\u0447\u043d\u0430\u044f \u043b\u043e\u0434\u043a\u0430",
+        "price": "2200.00",
+        "contractual": true,
+        "task_id": "e02ebf8d-9de5-48bf-a24e-883ba8472c6e",
+        "created_on": "2019-03-25T10:27:58.913Z",
+        "updated_on": "2019-03-25"
+    }
+},
+{
+    "model": "ads.ad",
+    "pk": 17,
+    "fields": {
+        "status": 20,
+        "creator": 2,
+        "title": "\u041f\u0440\u043e\u0434\u0430\u043c \u0432\u0435\u043b\u043e\u0441\u0438\u043f\u0435\u0434",
+        "category": 4,
+        "description": "\u0412\u0435\u043b\u043e\u0441\u0438\u043f\u0435\u0434 \u0432 \u043d\u043e\u0440\u043c \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0438",
+        "price": "8000.00",
+        "contractual": true,
+        "task_id": "f5c542f6-659a-4b41-ad0c-354c9abda861",
+        "created_on": "2019-03-25T10:29:50.642Z",
+        "updated_on": "2019-03-25"
+    }
+},
+{
+    "model": "ads.category",
+    "pk": 1,
+    "fields": {
+        "name": "\u0411\u044b\u0442\u043e\u0432\u0430\u044f \u0442\u0435\u0445\u043d\u0438\u043a\u0430",
+        "parent": 3,
+        "lft": 2,
+        "rght": 5,
+        "tree_id": 5,
+        "level": 1
+    }
+},
+{
+    "model": "ads.category",
+    "pk": 2,
+    "fields": {
+        "name": "\u0425\u043e\u043b\u043e\u0434\u0438\u043b\u044c\u043d\u0438\u043a\u0438",
+        "parent": 1,
+        "lft": 3,
+        "rght": 4,
+        "tree_id": 5,
+        "level": 2
+    }
+},
+{
+    "model": "ads.category",
+    "pk": 3,
+    "fields": {
+        "name": "\u042d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u0438\u043a\u0430",
+        "parent": null,
+        "lft": 1,
+        "rght": 6,
+        "tree_id": 5,
+        "level": 0
+    }
+},
+{
+    "model": "ads.category",
+    "pk": 4,
+    "fields": {
+        "name": "\u0412\u0435\u043b\u043e\u0441\u0438\u043f\u0435\u0434\u044b",
+        "parent": 5,
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 4,
+        "level": 1
+    }
+},
+{
+    "model": "ads.category",
+    "pk": 5,
+    "fields": {
+        "name": "\u0421\u043f\u043e\u0440\u0442",
+        "parent": null,
+        "lft": 1,
+        "rght": 6,
+        "tree_id": 4,
+        "level": 0
+    }
+},
+{
+    "model": "ads.category",
+    "pk": 6,
+    "fields": {
+        "name": "\u041b\u043e\u0434\u043a\u0438",
+        "parent": 5,
+        "lft": 4,
+        "rght": 5,
+        "tree_id": 4,
+        "level": 1
+    }
+},
+{
+    "model": "ads.image",
+    "pk": 32,
+    "fields": {
+        "image": "ad_images/6314045_0.jpg",
+        "ad": 15
+    }
+},
+{
+    "model": "ads.image",
+    "pk": 33,
+    "fields": {
+        "image": "ad_images/indesit-nts-14-aa-ua_images_2893505735.jpg",
+        "ad": 15
+    }
+},
+{
+    "model": "ads.image",
+    "pk": 34,
+    "fields": {
+        "image": "ad_images/image.webp",
+        "ad": 16
+    }
+},
+{
+    "model": "ads.image",
+    "pk": 35,
+    "fields": {
+        "image": "ad_images/image_1.webp",
+        "ad": 16
+    }
+},
+{
+    "model": "ads.image",
+    "pk": 36,
+    "fields": {
+        "image": "ad_images/image_2.webp",
+        "ad": 17
+    }
+},
+{
+    "model": "ads.image",
+    "pk": 37,
+    "fields": {
+        "image": "ad_images/image_3.webp",
+        "ad": 17
+    }
+}
+]
