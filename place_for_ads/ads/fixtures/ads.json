@@ -48,7 +48,7 @@
         "description": "Good !!!",
         "price": "9900.00",
         "contractual": true,
-        "task_id": "9086d805-2cbe-46fa-ac36-3e7727ba41f3",
+        "task_id": "",
         "created_on": "2019-03-25T10:26:00.377Z",
         "updated_on": "2019-03-25"
     }
@@ -64,7 +64,7 @@
         "description": "\u041e\u0442\u043b\u0438\u0447\u043d\u0430\u044f \u043b\u043e\u0434\u043a\u0430",
         "price": "2200.00",
         "contractual": true,
-        "task_id": "e02ebf8d-9de5-48bf-a24e-883ba8472c6e",
+        "task_id": "",
         "created_on": "2019-03-25T10:27:58.913Z",
         "updated_on": "2019-03-25"
     }
@@ -80,7 +80,7 @@
         "description": "\u0412\u0435\u043b\u043e\u0441\u0438\u043f\u0435\u0434 \u0432 \u043d\u043e\u0440\u043c \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0438",
         "price": "8000.00",
         "contractual": true,
-        "task_id": "f5c542f6-659a-4b41-ad0c-354c9abda861",
+        "task_id": "",
         "created_on": "2019-03-25T10:29:50.642Z",
         "updated_on": "2019-03-25"
     }
