@@ -1,7 +1,9 @@
 import coreapi
 from rest_framework.filters import BaseFilterBackend
+from rest_framework.response import Response
 from .utils import FilterMixin
 from .models import Ad
+from rest_framework.serializers import ValidationError
 
 
 class FilterBackend(FilterMixin, BaseFilterBackend):
@@ -21,10 +23,10 @@ class FilterBackend(FilterMixin, BaseFilterBackend):
             price = request.GET.get("price_sort", None)
             price_of_to = request.GET.get("price_of_to", None)
             if price or category or price_of_to:
-                queryset = self.own_filter(category=category, price=price,
-                                           price_of_to=price_of_to)
-                if queryset == 400:
-                    return Response("Bad Request", status=400)
+                good_queryset = self.own_filter(category=category, price=price,
+                                                price_of_to=price_of_to)
+                if good_queryset == 400:
+                    raise ValidationError("bad filter request")
             else:
                 queryset = Ad.objects.filter(status=Ad.PUBLISHED)
             return queryset

@@ -69,11 +69,8 @@ class AdTestCase(TestCase):
                                                             "description": "???"}).data["id"]
 
     def test_create_ad(self):
-        with open("media/ad_images/6314045_0.jpg", 'rb') as img_1, \
-             open("media/ad_images/indesit-nts-14-aa-ua_images_2893505735.jpg", "rb") as img_2:
-            parameters = {"title": "Sold", "category": "Холодильники", "description": "...",
-                          "images": [img_1, img_2]}
-            response = self.client.post(self.url, parameters)
+        parameters = {"title": "Sold", "category": "Холодильники", "description": "..."}
+        response = self.client.post(self.url, parameters)
 
         self.assertEqual(response.status_code, 201)
         self.assertTrue(isinstance(response.data, dict))
@@ -90,6 +87,31 @@ class AdTestCase(TestCase):
         self.assertTrue(response.data["detail"].startswith("Authentication credentials were not"))
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.status_text, "Unauthorized")
+
+    def test_add_images_to_ad(self):
+        url = reverse("images-list")
+        ad_id = str(self.ad_id)
+        with open("media/ad_images/6314045_0.jpg", "rb") as img_1, \
+             open("media/ad_images/image.webp", "rb") as img_2:
+
+             img_1_id = self.client.post(url, {"image": img_1, "ad": ad_id}).data["id"]
+             img_2_id = self.client.post(url, {"image": img_2, "ad": ad_id}).data["id"]
+
+        response = self.client.get(url + ad_id + "/")
+
+        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.status_code, 200)
+
+        self.client.delete(url + str(img_1_id) + "/")
+        self.client.delete(url + str(img_2_id) + "/")
+
+    def test_add_image_to_ad_fail(self):
+        client = Client()
+        url = reverse("images-list")
+        ad_id = str(self.ad_id)
+        with open("media/ad_images/6314045_0.jpg", "rb") as img:
+             response = client.post(url, {"image": img, "ad": ad_id})
+             self.assertEqual(response.status_code, 401)
 
     def test_partial_update_own_ad(self):
         url = self.url + str(self.ad_id) + "/"

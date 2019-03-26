@@ -4,15 +4,16 @@ from django.conf import settings
 from django.shortcuts import render, reverse
 from django.http import HttpResponseRedirect
 from rest_framework import generics, status, viewsets, permissions
-from .models import User, Ad, Category
+from .models import User, Ad, Category, Image
 from rest_framework.authtoken.models import Token
-from .serializers import UserCreateSerializer, AdSerializer, CategorySerializer, UserSerializer
+from .serializers import (UserCreateSerializer, ImageSerializer, AdSerializer,
+                          CategorySerializer, UserSerializer)
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FileUploadParser, ParseError, FormParser
 from rest_framework.decorators import action
 from .tasks import hide_ad_after_30_days
-from .permissions import IsCreatorOrReadOnly
+from .permissions import IsCreatorOrReadOnly, IsImageCreatorOrReadOnly
 from .filters_backend import FilterBackend
 
 
@@ -34,7 +35,6 @@ class UserAuthorization(APIView):
         if request.META.get("HTTP_AUTHORIZATION", None) or request.COOKIES.get("authorization", None):
             return HttpResponseRedirect(reverse("ads-list"))
 
-        print("authorization")
         validate = self.validate(request)
         if validate == True:
             user = User.objects.get(username=request.POST.get("username"))
@@ -82,6 +82,34 @@ class AdViewSet(viewsets.ModelViewSet):
                 os.remove(str(path_to_img))
         self.perform_destroy(instance)
         return Response(f"{instance.title} was deleted", status=200)
+
+
+class ImageViewSet(viewsets.ModelViewSet):
+    """
+        retrieve: {id} specify on ad_id
+    """
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsImageCreatorOrReadOnly)
+
+    def retrieve(self, request, pk=None):
+        images = Image.objects.filter(ad__id=pk)
+        data = []
+        for image in images:
+            data.append(ImageSerializer(image).data)
+        return Response(data)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        media_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + settings.MEDIA_URL
+        image = instance.image
+        path_to_img = media_path + str(image)
+
+        os.remove(str(path_to_img))
+        self.perform_destroy(instance)
+
+        return Response(f"{instance.image} was deleted", status=200)
 
 
 class Categories(generics.ListAPIView):

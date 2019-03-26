@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from .models import Image, Ad
 
 
 class IsCreatorOrReadOnly(permissions.BasePermission):
@@ -13,3 +14,21 @@ class IsCreatorOrReadOnly(permissions.BasePermission):
 
         # Write permissions are only allowed to the creator.
         return obj.creator == request.user
+
+
+class IsImageCreatorOrReadOnly(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        user = request.user
+        ad_id = request.POST.get("ad", None)
+        if not ad_id:
+            return True
+
+        ad = Ad.objects.filter(id=ad_id).first()
+
+        if ad:
+            return ad.creator == user
+        return True

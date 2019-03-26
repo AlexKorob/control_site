@@ -23,8 +23,10 @@
   logout
 ```
 
-#### Load fixtures
+#### Migrate and load fixtures
+
 ```bash
+  ./manage.py migrate
   ./manage.py loaddata ads.json
 ```
 
@@ -43,6 +45,11 @@
 #### Start site:
 
 ```bash
-  ./manage.py migrate
   ./manage.py runserver
 ```
+
+Users:
+  superuser:
+    * alex | 123
+  simple user:
+    * alexandr | 1234567dD

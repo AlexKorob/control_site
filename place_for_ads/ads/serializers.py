@@ -2,7 +2,6 @@ import re
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import User, Image, Ad, Category
-from .utils import AdSerializerMixin
 from rest_framework.authtoken.models import Token
 from rest_framework_recursive.fields import RecursiveField
 from rest_framework.parsers import ParseError
@@ -37,12 +36,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
         return password
 
 
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = ('image', )
-
-
 class CategorySerializer(serializers.ModelSerializer):
     parent = serializers.ReadOnlyField(source="parent.name")
 
@@ -51,24 +44,25 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('name', 'parent')
 
 
-class AdSerializer(AdSerializerMixin, serializers.ModelSerializer):
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('id', 'image', 'ad')
+
+
+class ImageAdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ("image", )
+
+
+class AdSerializer(serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.username')
-    images = ImageSerializer(many=True, read_only=True)
+    images = ImageAdSerializer(many=True, required=False, read_only=True)
     category_branch = serializers.CharField(source="category.get_full_path", read_only=True)
-    category = serializers.CharField()
+    category = serializers.SlugRelatedField(slug_field='name', queryset=Category.objects.all(), required=True)
 
     class Meta:
         model = Ad
         fields = ('id', 'creator', 'title', 'status', 'category', 'category_branch', 'images',
                   'description', 'price', 'contractual')
-
-    def create(self, data):
-        return self.mix(data, self.context, "create")
-
-    def update(self, instance, data):
-        data = self.mix(data, self.context, "update", instance)
-        return super().update(instance, data)
-
-    def partial_update(self, instance, data):
-        data =  self.mix(data, self.context, "update", instance)
-        return super().update(instance, data)

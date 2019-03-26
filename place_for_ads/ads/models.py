@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey
+from rest_framework.serializers import ValidationError
 
 
 class User(AbstractUser):
@@ -60,6 +61,12 @@ class Category(MPTTModel):
 class Image(models.Model):
     image = models.ImageField(upload_to='ad_images/')
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='images')
+
+    def save(self, *args, **kwargs):
+        images = Image.objects.filter(ad=self.ad.id).count()
+        if images >= 8:
+            raise ValidationError("Images File must be < 8")
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return "Image for {0}; creator: {1}".format(self.ad.title, self.ad.creator.username)
