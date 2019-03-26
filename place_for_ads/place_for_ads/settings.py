@@ -42,9 +42,9 @@ INSTALLED_APPS = [
     'ads',
 
     'rest_framework',
-    'rest_framework_swagger',
     'rest_framework.authtoken',
     'rest_framework_recursive',
+    'rest_framework_swagger',
 
     'debug_toolbar',
 
@@ -161,11 +161,17 @@ REST_FRAMEWORK = {
     #     'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     # ),
     'DEFAULT_PAGINATION_CLASS': 'ads.pagination.Pagination',
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.MultiPartParser',
+    ],
 }
 
 
 CELERY_BROKER_URL = 'redis://localhost:6379/1'
 CELERY_BACKEND_URL = 'redis://localhost:6379/1'
+
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {

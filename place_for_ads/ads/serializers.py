@@ -48,31 +48,18 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('name', 'parent')#'subcategories')
-
-# class RecursiveField(serializers.Serializer):
-#     def to_native(self, value):
-#         return self.parent.to_native(value)
-
-
-class CategoryAdSerializer(serializers.ModelSerializer):
-    # subcategories = serializers.ListSerializer(source="children", child=RecursiveField(), required=False)
-    # children = RecursiveField(many=True, required=False)
-    full_path = serializers.ReadOnlyField(source='get_full_path')
-
-    class Meta:
-        model = Category
-        fields = ('name', 'full_path')
+        fields = ('name', 'parent')
 
 
 class AdSerializer(AdSerializerMixin, serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.username')
     images = ImageSerializer(many=True, read_only=True)
-    category = CategoryAdSerializer(read_only=True)
+    category_branch = serializers.CharField(source="category.get_full_path", read_only=True)
+    category = serializers.CharField()
 
     class Meta:
         model = Ad
-        fields = ('id', 'creator', 'title', 'status', 'category', 'images',
+        fields = ('id', 'creator', 'title', 'status', 'category', 'category_branch', 'images',
                   'description', 'price', 'contractual')
 
     def create(self, data):

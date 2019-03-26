@@ -6,12 +6,12 @@ from PIL import Image as Img
 class AdSerializerMixin(object):
 
     def mix(self, data, context, action, instance=None):
-        extra_data = dict(context.get('view').request.data.lists())
-        category_name = extra_data.get("category", None)
+        extra_data = dict(context.get('view').request.data)
+        category_name = data.get("category", None)
 
         if category_name:
             try:
-                data["category"] = Category.objects.get(name=category_name[0])
+                data["category"] = Category.objects.get(name=category_name)
             except Category.DoesNotExist:
                 raise ValidationError("Category isn't found")
         elif action == "create":
@@ -56,7 +56,7 @@ class AdSerializerMixin(object):
         return True
 
 
-class FilterViewMixin(object):
+class FilterMixin(object):
 
     def own_filter(self, category=None, price=None, price_of_to=None):
         category = Category.objects.filter(name=category).first()

@@ -4,7 +4,12 @@ from .models import User, Ad, Category, Image
 from mptt.admin import DraggableMPTTAdmin, TreeRelatedFieldListFilter
 
 
+class ImageTabularInline(admin.TabularInline):
+    model = Image
+
+
 class AdAdmin(admin.ModelAdmin):
+    inlines = (ImageTabularInline, )
     list_display = [field.name for field in Ad._meta.fields]
     list_filter = (("category", TreeRelatedFieldListFilter), )
     search_fields = ("creator__username", "status", "title", "category__name")
@@ -15,7 +20,6 @@ class CategoryAdmin(DraggableMPTTAdmin):
 
 
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ("ad", "image")
     list_filter = (("ad__category", TreeRelatedFieldListFilter), )
     search_fields = ("ad__creator__username", "ad__title")
 

@@ -22,7 +22,7 @@
     "model": "ads.user",
     "pk": 2,
     "fields": {
-        "password": "1234567Dd",
+        "password": "pbkdf2_sha256$120000$P8GpCg0DTsFA$BK0dW4DMWUOSnN/vXRv1bdDtEE+EpnnMjHsnRI7Zz/8=",
         "last_login": null,
         "is_superuser": false,
         "username": "alexandr",
@@ -39,7 +39,7 @@
 },
 {
     "model": "ads.ad",
-    "pk": 15,
+    "pk": 1,
     "fields": {
         "status": 20,
         "creator": 1,
@@ -55,7 +55,7 @@
 },
 {
     "model": "ads.ad",
-    "pk": 16,
+    "pk": 2,
     "fields": {
         "status": 20,
         "creator": 1,
@@ -71,7 +71,7 @@
 },
 {
     "model": "ads.ad",
-    "pk": 17,
+    "pk": 3,
     "fields": {
         "status": 20,
         "creator": 2,
@@ -159,50 +159,50 @@
 },
 {
     "model": "ads.image",
-    "pk": 32,
+    "pk": 1,
     "fields": {
         "image": "ad_images/6314045_0.jpg",
-        "ad": 15
+        "ad": 1
     }
 },
 {
     "model": "ads.image",
-    "pk": 33,
+    "pk": 2,
     "fields": {
         "image": "ad_images/indesit-nts-14-aa-ua_images_2893505735.jpg",
-        "ad": 15
+        "ad": 1
     }
 },
 {
     "model": "ads.image",
-    "pk": 34,
+    "pk": 3,
     "fields": {
         "image": "ad_images/image.webp",
-        "ad": 16
+        "ad": 2
     }
 },
 {
     "model": "ads.image",
-    "pk": 35,
+    "pk": 4,
     "fields": {
         "image": "ad_images/image_1.webp",
-        "ad": 16
+        "ad": 2
     }
 },
 {
     "model": "ads.image",
-    "pk": 36,
+    "pk": 5,
     "fields": {
         "image": "ad_images/image_2.webp",
-        "ad": 17
+        "ad": 3
     }
 },
 {
     "model": "ads.image",
-    "pk": 37,
+    "pk": 6,
     "fields": {
         "image": "ad_images/image_3.webp",
-        "ad": 17
+        "ad": 3
     }
 }
 ]

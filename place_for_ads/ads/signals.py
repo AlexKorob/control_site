@@ -1,6 +1,7 @@
 from .tasks import hide_ad_after_30_days
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from rest_framework.authtoken.models import Token
 from datetime import datetime
 from datetime import timedelta
 from celery.task.control import inspect, revoke

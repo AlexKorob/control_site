@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
-from rest_framework.authtoken.models import Token
 from mptt.models import MPTTModel, TreeForeignKey
 
 
@@ -63,7 +62,7 @@ class Image(models.Model):
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='images')
 
     def __str__(self):
-        return "Image for {0}; creator: {1}".format(self.ad.title, self.ad.creator)
+        return "Image for {0}; creator: {1}".format(self.ad.title, self.ad.creator.username)
 
 
 # class Favorite(models.Model):

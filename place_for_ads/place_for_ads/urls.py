@@ -23,10 +23,10 @@ from rest_framework_swagger.views import get_swagger_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('ads.urls')),
-
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('swagger/', get_swagger_view(title='API')),
 ]
+
 
 if settings.DEBUG:
     import debug_toolbar

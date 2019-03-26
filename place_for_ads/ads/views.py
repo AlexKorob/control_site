@@ -13,7 +13,7 @@ from rest_framework.parsers import MultiPartParser, FileUploadParser, ParseError
 from rest_framework.decorators import action
 from .tasks import hide_ad_after_30_days
 from .permissions import IsCreatorOrReadOnly
-from .utils import FilterViewMixin
+from .filters_backend import FilterBackend
 
 
 class UserCreate(generics.CreateAPIView):
@@ -34,10 +34,11 @@ class UserAuthorization(APIView):
         if request.META.get("HTTP_AUTHORIZATION", None) or request.COOKIES.get("authorization", None):
             return HttpResponseRedirect(reverse("ads-list"))
 
+        print("authorization")
         validate = self.validate(request)
         if validate == True:
-            user = User.objects.get(username=request.data["username"], password=request.data["password"])
-            token_auth = "Token " + Token.objects.get(user_id=user.id).key
+            user = User.objects.get(username=request.POST.get("username"))
+            token_auth = "Token " + Token.objects.get_or_create(user=user)[0].key
             return Response(token_auth)
         return Response(validate, status=status.HTTP_400_BAD_REQUEST)
 
@@ -48,17 +49,24 @@ class UserAuthorization(APIView):
         if not username or not password:
             return {"error": "Field username and password must be filled"}
 
-        user = User.objects.filter(username=username, password=password)
-        if not user:
+        user = User.objects.filter(username=username).first()
+
+        if not user or not user.check_password(password):
             return {"error": "Username or password isn't correct"}
         return True
 
 
-class AdViewSet(FilterViewMixin, viewsets.ModelViewSet):
+class AdViewSet(viewsets.ModelViewSet):
+    """
+        list: get all or filtered ads with status == "published" 20
+        create: create one ad with status == "checking" 10
+        destroy: destroyed ad on id and also destroyed all images this ad from hard disk
+    """
+
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsCreatorOrReadOnly)
-    # parser_classes = (MultiPartParser, FormParser)
+    filter_backends = (FilterBackend, )
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
@@ -75,34 +83,29 @@ class AdViewSet(FilterViewMixin, viewsets.ModelViewSet):
         self.perform_destroy(instance)
         return Response(f"{instance.title} was deleted", status=200)
 
-    def list(self, request, *args, **kwargs):
-        category = request.GET.get("category", None)
-        price = request.GET.get("price", None)
-        price_of_to = request.GET.get("price_of_to", None)
-        if price or category:
-            self.queryset = self.own_filter(category=category, price=price,
-                                            price_of_to=price_of_to)
-            if self.queryset == 400:
-                return Response("Bad Request", status=400)
-        else:
-            self.queryset = Ad.objects.filter(status=Ad.PUBLISHED)
-        return super().list(self, request, *args, **kwargs)
-
 
 class Categories(generics.ListAPIView):
+    """
+        list: get abstract tree categories
+    """
+
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+        list: show all users
+        retrieve: get all user ads
+    """
     # lookup_field would be used by the get_object, by default == id
     lookup_field = "username"
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 
     @action(detail=True, methods=("get",))
     def ad(self, request, *args, **kwargs):
-        # user_name = self.queryset.filter(username=)
         user = self.get_object()
         ad = Ad.objects.filter(creator=user)
         serializer = AdSerializer(ad, many=True)
