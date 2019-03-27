@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Ad, Category, Image
+from .models import User, Ad, Category, Image, Favorite
 from mptt.admin import DraggableMPTTAdmin, TreeRelatedFieldListFilter
 
 
@@ -24,7 +24,11 @@ class ImageAdmin(admin.ModelAdmin):
     search_fields = ("ad__creator__username", "ad__title")
 
 
+class FavoriteAdmin(admin.ModelAdmin):
+    pass
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Ad, AdAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Image, ImageAdmin)
+admin.site.register(Favorite, FavoriteAdmin)

@@ -4,10 +4,10 @@ from django.conf import settings
 from django.shortcuts import render, reverse
 from django.http import HttpResponseRedirect
 from rest_framework import generics, status, viewsets, permissions
-from .models import User, Ad, Category, Image
+from .models import User, Ad, Category, Image, Favorite
 from rest_framework.authtoken.models import Token
-from .serializers import (UserCreateSerializer, ImageSerializer, AdSerializer,
-                          CategorySerializer, UserSerializer)
+from .serializers import (UserCreateSerializer, ImageSerializer, AdSerializer, FavoriteShowSerializer,
+                          CategorySerializer, UserSerializer, FavoriteSerializer)
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FileUploadParser, ParseError, FormParser
@@ -58,9 +58,9 @@ class UserAuthorization(APIView):
 
 class AdViewSet(viewsets.ModelViewSet):
     """
-        list: get all or filtered ads with status == "published" 20
-        create: create one ad with status == "checking" 10
-        destroy: destroyed ad on id and also destroyed all images this ad from hard disk
+        list: << get all or filtered ads with status=="published" 20 >>
+        create: << create one ad with status=="checking" 10 >>
+        destroy: << destroyed ad on id and also destroyed all images this ad from hard disk >>
     """
 
     queryset = Ad.objects.all()
@@ -86,11 +86,14 @@ class AdViewSet(viewsets.ModelViewSet):
 
 class ImageViewSet(viewsets.ModelViewSet):
     """
-        retrieve: {id} specify on ad_id
+        retrieve: { id specify on ad_id (not on image_id!) }
     """
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsImageCreatorOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
+
+    def filter_queryset(self, queryset):
+        return queryset.filter(ad__creator=self.request.user)
 
     def retrieve(self, request, pk=None):
         images = Image.objects.filter(ad__id=pk)
@@ -114,17 +117,36 @@ class ImageViewSet(viewsets.ModelViewSet):
 
 class Categories(generics.ListAPIView):
     """
-        list: get abstract tree categories
+        list: << get abstract tree-categories >>
     """
 
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
+class FavoriteViewSet(viewsets.ModelViewSet):
+    """
+        list: << show you all own favorites >>
+        create: parameters: input ad id, which your are want add to favorite
+        update: { input your own favorite id } parameters: id ad which you are want update;
+        delete: { input your own favorite id }
+    """
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return FavoriteShowSerializer
+        return FavoriteSerializer
+
+    def filter_queryset(self, queryset):
+        return queryset.filter(user=self.request.user)
+
+
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
-        list: show all users
-        retrieve: get all user ads
+        list: << show all users >>
     """
     # lookup_field would be used by the get_object, by default == id
     lookup_field = "username"
@@ -134,6 +156,9 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=True, methods=("get",))
     def ad(self, request, *args, **kwargs):
+        """
+            << get all user ads >>
+        """
         user = self.get_object()
         ad = Ad.objects.filter(creator=user)
         serializer = AdSerializer(ad, many=True)

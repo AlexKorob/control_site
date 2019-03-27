@@ -1,7 +1,7 @@
 import re
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import User, Image, Ad, Category
+from .models import User, Image, Ad, Category, Favorite
 from rest_framework.authtoken.models import Token
 from rest_framework_recursive.fields import RecursiveField
 from rest_framework.parsers import ParseError
@@ -49,6 +49,12 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Image
         fields = ('id', 'image', 'ad')
 
+    def validate_ad(self, ad):
+        user = self.context["request"].user.id
+        if user != ad.creator.id:
+            raise serializers.ValidationError("This is not your ad")
+        return ad
+
 
 class ImageAdSerializer(serializers.ModelSerializer):
     class Meta:
@@ -66,3 +72,29 @@ class AdSerializer(serializers.ModelSerializer):
         model = Ad
         fields = ('id', 'creator', 'title', 'status', 'category', 'category_branch', 'images',
                   'description', 'price', 'contractual')
+
+
+class FavoriteShowSerializer(serializers.ModelSerializer):
+    ad = AdSerializer(read_only=True)
+
+    class Meta:
+        model = Favorite
+        fields = ('id', 'ad', 'user')
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Favorite
+        fields = ('ad', )
+
+    def create(self, data):
+        data["user"] = User.objects.get(id=self.context["request"].user.id)
+        return Favorite.objects.create(**data)
+
+    def validate_ad(self, data):
+        user = self.context["request"].user.id
+
+        if Favorite.objects.filter(user=user, ad=data).exists():
+            raise serializers.ValidationError("This ad was added to favorites")
+        return data

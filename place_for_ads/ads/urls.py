@@ -8,6 +8,7 @@ router = DefaultRouter()
 router.register(r'ads', views.AdViewSet, base_name="ads")
 router.register(r'images', views.ImageViewSet, basename="images")
 router.register(r'users', views.UserViewSet)
+router.register(r'favorites', views.FavoriteViewSet, base_name="favorites")
 
 
 urlpatterns = [

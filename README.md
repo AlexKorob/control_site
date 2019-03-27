@@ -19,6 +19,7 @@
   CREATE DATABASE place_for_ads;
   CREATE USER alex WITH PASSWORD '123';
   GRANT ALL PRIVILEGES ON DATABASE place_for_ads TO alex;
+  ALTER USER alex CREATEDB;
   \q
   logout
 ```
@@ -48,8 +49,8 @@
   ./manage.py runserver
 ```
 
-Users:
-  superuser:
-    * alex | 123
-  simple user:
-    * alexandr | 1234567dD
+<p>Users:</p>
+<ul style="padding-left: 10px;">superuser:</ul>
+    <li>alex | 123</li>
+<ul style="padding-left: 10px;">simple user:</ul>
+    <li>alexandr | 1234567dD</li>

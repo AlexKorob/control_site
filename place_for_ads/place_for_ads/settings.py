@@ -87,21 +87,14 @@ WSGI_APPLICATION = 'place_for_ads.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'place_for_ads',
-#         'USER': 'alex',
-#         'PASSWORD': '123',
-#         'HOST': 'localhost',
-#         'PORT': 5432
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'place_for_ads',
+        'USER': 'alex',
+        'PASSWORD': '123',
+        'HOST': 'localhost',
+        'PORT': 5432
     }
 }
 
@@ -157,9 +150,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
     'NON_FIELD_ERRORS_KEY': 'error',
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-    # ),
     'DEFAULT_PAGINATION_CLASS': 'ads.pagination.Pagination',
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.FormParser',

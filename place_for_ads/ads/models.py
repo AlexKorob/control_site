@@ -72,9 +72,9 @@ class Image(models.Model):
         return "Image for {0}; creator: {1}".format(self.ad.title, self.ad.creator.username)
 
 
-# class Favorite(models.Model):
-#     favorite = models.ManyToManyField(Ad, related_name="favorites")
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorites")
-#
-#     def __str__(self):
-#         return user.username
+class Favorite(models.Model):
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name="favorites")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorites")
+
+    def __str__(self):
+        return user.username

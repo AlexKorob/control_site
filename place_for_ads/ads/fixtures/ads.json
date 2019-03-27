@@ -204,5 +204,37 @@
         "image": "ad_images/image_3.webp",
         "ad": 3
     }
+},
+{
+    "model": "ads.favorite",
+    "pk": 1,
+    "fields": {
+        "ad": 3,
+        "user": 1
+    }
+},
+{
+    "model": "ads.favorite",
+    "pk": 2,
+    "fields": {
+        "ad": 1,
+        "user": 1
+    }
+},
+{
+    "model": "ads.favorite",
+    "pk": 3,
+    "fields": {
+        "ad": 2,
+        "user": 1
+    }
+},
+{
+    "model": "ads.favorite",
+    "pk": 4,
+    "fields": {
+        "ad": 2,
+        "user": 2
+    }
 }
 ]
