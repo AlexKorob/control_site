@@ -1,10 +1,6 @@
 import re
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
 from .models import User, Image, Ad, Category, Favorite
-from rest_framework.authtoken.models import Token
-from rest_framework_recursive.fields import RecursiveField
-from rest_framework.parsers import ParseError
 
 
 class UserSerializer(serializers.ModelSerializer):

@@ -1,19 +1,18 @@
 import os
-from datetime import timedelta
 from django.conf import settings
-from django.shortcuts import render, reverse
+from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
+
 from rest_framework import generics, status, viewsets, permissions
-from .models import User, Ad, Category, Image, Favorite
 from rest_framework.authtoken.models import Token
-from .serializers import (UserCreateSerializer, ImageSerializer, AdSerializer, FavoriteShowSerializer,
-                          CategorySerializer, UserSerializer, FavoriteSerializer)
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FileUploadParser, ParseError, FormParser
 from rest_framework.decorators import action
-from .tasks import hide_ad_after_30_days
-from .permissions import IsCreatorOrReadOnly, IsImageCreatorOrReadOnly
+
+from .models import User, Ad, Category, Image, Favorite
+from .serializers import (UserCreateSerializer, ImageSerializer, AdSerializer, FavoriteShowSerializer,
+                          CategorySerializer, UserSerializer, FavoriteSerializer)
+from .permissions import IsCreatorOrReadOnly
 from .filters_backend import FilterBackend
 
 
@@ -36,7 +35,7 @@ class UserAuthorization(APIView):
             return HttpResponseRedirect(reverse("ads-list"))
 
         validate = self.validate(request)
-        if validate == True:
+        if validate is True:
             user = User.objects.get(username=request.POST.get("username"))
             token_auth = "Token " + Token.objects.get_or_create(user=user)[0].key
             return Response(token_auth)
@@ -62,7 +61,6 @@ class AdViewSet(viewsets.ModelViewSet):
         create: << create one ad with status=="checking" 10 >>
         destroy: << destroyed ad on id and also destroyed all images this ad from hard disk >>
     """
-
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsCreatorOrReadOnly)
@@ -119,7 +117,6 @@ class Categories(generics.ListAPIView):
     """
         list: << get abstract tree-categories >>
     """
-
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 

@@ -1,5 +1,4 @@
 from celery import shared_task
-from celery.task import task
 from .models import Ad
 
 

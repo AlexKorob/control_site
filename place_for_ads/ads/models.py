@@ -39,6 +39,7 @@ class Ad(models.Model):
         return "Ad: {0}; creator: {1}; category {2}; price: {3};".format(self.title, self.creator,
                                                                          self.category, self.price)
 
+
 class Category(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['name']
@@ -77,4 +78,4 @@ class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorites")
 
     def __str__(self):
-        return user.username
+        return self.user.username

@@ -2,7 +2,6 @@ import json
 from django.test import TestCase
 from django.shortcuts import reverse
 from django.test import Client
-from django.core.files.uploadedfile import SimpleUploadedFile
 from .models import User
 
 
@@ -14,7 +13,7 @@ class UserCreateTestCase(TestCase):
         super().setUpClass()
         cls.url = reverse('user_create')
         cls.parameters = {'username': 'oleg', 'password': '123sS123',
-                      'phone': '+30774562664', 'email': 'oleg@gmail.com'}
+                          'phone': '+30774562664', 'email': 'oleg@gmail.com'}
 
     def test_create_user(self):
         client = self.client.post(self.url, self.parameters)
@@ -33,7 +32,7 @@ class UserCreateTestCase(TestCase):
         self.assertEqual(client.status_code, 400)
         parameters["email"] = ""
         self.assertEqual(client.status_code, 400)
-        parameters["password"]= "123sS123"
+        parameters["password"] = "123sS123"
         parameters["email"] = "masha@gmail.com"
         self.assertEqual(client.status_code, 400)
 
@@ -110,8 +109,8 @@ class AdTestCase(TestCase):
         url = reverse("images-list")
         ad_id = str(self.ad_id)
         with open("media/ad_images/6314045_0.jpg", "rb") as img:
-             response = client.post(url, {"image": img, "ad": ad_id})
-             self.assertEqual(response.status_code, 401)
+            response = client.post(url, {"image": img, "ad": ad_id})
+            self.assertEqual(response.status_code, 401)
 
     def test_partial_update_own_ad(self):
         url = self.url + str(self.ad_id) + "/"
@@ -120,7 +119,7 @@ class AdTestCase(TestCase):
         response = self.client.patch(url, data, content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(isinstance(response.data, dict))
-        self.assertEqual(response.data["description"], "???") # description isn't changed
+        self.assertEqual(response.data["description"], "???")
 
     def test_partial_update_pesmission_denied(self):
         url = self.url + "1/"

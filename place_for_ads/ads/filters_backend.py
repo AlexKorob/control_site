@@ -1,6 +1,5 @@
 import coreapi
 from rest_framework.filters import BaseFilterBackend
-from rest_framework.response import Response
 from .utils import FilterMixin
 from .models import Ad
 from rest_framework.serializers import ValidationError

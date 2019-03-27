@@ -4,9 +4,8 @@ from django.db.models.signals import post_save
 from rest_framework.authtoken.models import Token
 from datetime import datetime
 from datetime import timedelta
-from celery.task.control import inspect, revoke
+from celery.task.control import revoke
 from .models import User, Ad
-from .utils import prevent_signal_save_recursion
 
 
 @receiver(post_save, sender=User)

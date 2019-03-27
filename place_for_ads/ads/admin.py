@@ -16,7 +16,7 @@ class AdAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(DraggableMPTTAdmin):
-    list_filter=(("parent", TreeRelatedFieldListFilter), )
+    list_filter = (("parent", TreeRelatedFieldListFilter), )
 
 
 class ImageAdmin(admin.ModelAdmin):
@@ -26,6 +26,7 @@ class ImageAdmin(admin.ModelAdmin):
 
 class FavoriteAdmin(admin.ModelAdmin):
     pass
+
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Ad, AdAdmin)

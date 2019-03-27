@@ -49,8 +49,8 @@
   ./manage.py runserver
 ```
 
-<p>Users:</p>
-<ul style="padding-left: 10px;">superuser:</ul>
-    <li>alex | 123</li>
-<ul style="padding-left: 10px;">simple user:</ul>
-    <li>alexandr | 1234567dD</li>
+<p >Users:</p>
+<ul>superuser:</ul>
+    <li style="padding-left: 10px;">alex | 123</li>
+<ul>simple user:</ul>
+    <li style="padding-left: 10px;">alexandr | 1234567dD</li>

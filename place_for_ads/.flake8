@@ -1,0 +1,3 @@
+[flake8]
+exclude = ./ads/migrations/*, ./ads/tests.py
+max-line-length = 120
