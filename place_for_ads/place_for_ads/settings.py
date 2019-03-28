@@ -39,15 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'mptt',
+    'django_filters',
+    'debug_toolbar',
+
     'ads',
 
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_recursive',
     'rest_framework_swagger',
-
-    'debug_toolbar',
-
 ]
 
 MIDDLEWARE = [

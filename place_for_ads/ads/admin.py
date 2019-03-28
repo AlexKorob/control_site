@@ -25,7 +25,7 @@ class ImageAdmin(admin.ModelAdmin):
 
 
 class FavoriteAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ("ad__creator__username", "ad__title")
 
 
 admin.site.register(User, UserAdmin)

@@ -51,6 +51,6 @@
 
 <p >Users:</p>
 <ul>superuser:</ul>
-    <li style="padding-left: 10px;">alex | 123</li>
+    <li>alex | 123</li>
 <ul>simple user:</ul>
-    <li style="padding-left: 10px;">alexandr | 1234567dD</li>
+    <li>alexandr | 1234567dD</li>

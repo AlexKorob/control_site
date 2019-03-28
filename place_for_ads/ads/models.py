@@ -12,6 +12,9 @@ class User(AbstractUser):
 
 
 class Ad(models.Model):
+    class Meta:
+        ordering = ("-created_on", )
+
     CHECKING = 10
     PUBLISHED = 20
     REJECTED = 30
@@ -78,4 +81,4 @@ class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorites")
 
     def __str__(self):
-        return self.user.username
+        return "user: {0}; add {1}".format(self.user.username, self.ad.title)
