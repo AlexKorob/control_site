@@ -12,7 +12,7 @@ router.register(r'favorites', views.FavoriteViewSet, base_name="favorites")
 
 
 urlpatterns = [
-    path('token-auth/', obtain_auth_token),
+    path('token-auth/', obtain_auth_token, name="user_auth"),
     path('registration/', views.UserCreate.as_view(), name="user_create"),
     path('categories/', views.Categories.as_view(), name="categories"),
 ]

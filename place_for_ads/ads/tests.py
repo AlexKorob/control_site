@@ -16,9 +16,10 @@ class UserCreateTestCase(TestCase):
                           'phone': '+30774562664', 'email': 'oleg@gmail.com'}
 
     def test_create_user(self):
+        users_on_db_count = User.objects.count()
         client = self.client.post(self.url, self.parameters)
         self.assertEqual(client.status_code, 201)
-        self.assertEqual(User.objects.count(), 3)
+        self.assertEqual(User.objects.count(), users_on_db_count + 1)
         self.assertTrue(client.data.startswith("Token "))
 
     def test_create_user_fail(self):
@@ -45,7 +46,7 @@ class UserAuthorizationTestCase(TestCase):
         parameters = {'username': 'alexandr', 'password': '1234567dD'}
         client = self.client.post(url, parameters)
         self.assertEqual(client.status_code, 200)
-        self.assertTrue(client.data.startswith("Token "))
+        self.assertTrue(client.data.get("token"))
 
     def test_user_authorization_fail(self):
         url = reverse('user_auth')
