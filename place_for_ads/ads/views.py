@@ -2,6 +2,7 @@ import os
 from django.conf import settings
 from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
+from django.contrib.auth.models import AnonymousUser
 
 from rest_framework import generics, status, viewsets, permissions
 from rest_framework.authtoken.models import Token
@@ -81,7 +82,9 @@ class ImageViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 
     def filter_queryset(self, queryset):
-        return queryset.filter(ad__creator=self.request.user)
+        if AnonymousUser() != self.request.user:
+            return queryset.filter(ad__creator=self.request.user)
+        return queryset
 
     def retrieve(self, request, pk=None):
         images = Image.objects.filter(ad__id=pk)
